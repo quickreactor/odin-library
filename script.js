@@ -1,22 +1,127 @@
-const myLibrary = [];
+const libraryContainer = document.querySelector('.library-container');
+const dialogElem = document.getElementById("dialog");
+const showBtn = document.querySelector(".show");
+const closeBtn = document.querySelector(".close");
+const subBtn = document.querySelector(".submit");
+const titleIn = document.querySelector("#title");
+const authorIn = document.querySelector("#author");
+const pagesIn = document.querySelector("#pages");
+const readIn = document.querySelector("#read");
+
+
+
+const myLibrary = [
+
+];
 
 function Book(title, author, numPages, isRead) {
     this.title = title;
     this.author = author;
     this.numPages = numPages;
     this.isRead = isRead;
-    this.info = function() {
-        return `${this.title} by ${this.author}, ${this.numPages} pages, ${this.isRead ? "already read." : "not read yet."}`
+    this.toggleRead = function() {
+        console.log(`set changed oh nooo!`)
+        return this.isRead = !this.isRead;
     }
+    // this.info = function () {
+    //     return `${this.title} by ${this.author}, ${this.numPages} pages, ${this.isRead ? "already read." : "not read yet."}`
+    // }
 }
 
-function addBookToLibrary(book) {
-    myLibrary.push(book);
+function addBookToLibrary() {
+    myLibrary.push(
+        new Book(
+            titleIn.value,
+            authorIn.value,
+            pagesIn.value,
+            readIn.value === 'yes' ? true : false
+        )
+    );
 }
 
-addBookToLibrary(new Book('The Hobbit', 'J.R.R.Tolkien', 295, false));
-addBookToLibrary(new Book('The Way of Kings', 'Brandon Sanderson', 1034, true));
-addBookToLibrary(new Book('Cradle: Path of Gold', 'Will Wight', 803, false));
-addBookToLibrary(new Book('Harry Potter and the Philosophers Stone', 'J.K. Rowling', 500, true));
 
-console.log(myLibrary[0].title);
+function refresh() {
+    libraryContainer.innerHTML = '';
+    myLibrary.forEach((book, bookNumber) => {
+        let bookCard = document.createElement('div')
+        bookCard.classList.add('book-card', 'ai-center', 'space-between');
+        bookCard.innerText = `${book.title} by ${book.author}, ${book.numPages} pages, ${book.isRead ? "already read." : "not read yet."}`
+        bookCard.dataset.bookNumber = bookNumber;
+        let delButton = document.createElement('button');
+        delButton.innerText = "Delete";
+        delButton.classList.add('del-button');
+        delButton.addEventListener('click', deleteBookFromLibrary)
+        let toggleReadButton = document.createElement('button');
+        toggleReadButton.innerText = myLibrary[bookNumber].isRead === true ? "Read" : "Unread";
+        toggleReadButton.classList.add('toggle-read-button');
+        toggleReadButton.addEventListener('click', function(e) {
+            let dataBook = parseInt(e.target.parentElement.dataset.bookNumber);
+            console.log(bookNumber);
+            myLibrary[dataBook].toggleRead();
+            refresh();
+        })
+        bookCard.appendChild(delButton);
+        bookCard.appendChild(toggleReadButton);
+        libraryContainer.appendChild(bookCard);
+    });
+}
+
+function deleteBookFromLibrary(e) {
+    let bookNumber = e.target.dataset.bookNumber;
+    myLibrary.splice(bookNumber, 1);
+    refresh();
+}
+
+function clearForm() {
+    titleIn.value = '';
+    authorIn.value = '';
+    pagesIn.value = '';
+}
+
+
+
+// Eventr listeners
+
+
+showBtn.addEventListener("click", () => {
+    dialogElem.showModal();
+});
+
+closeBtn.addEventListener("click", () => {
+    dialogElem.close();
+});
+
+subBtn.addEventListener('click', () => {
+    addBookToLibrary();
+    clearForm();
+    refresh();
+});
+
+
+(function onLoad() {
+    myLibrary.push(new Book(
+        'The Hobbit',
+        "J.R.R. Tolkien",
+        295,
+        false
+    ));
+    myLibrary.push(new Book(
+        'The Way of Kings',
+        "Brandon Sanderson",
+        1034,
+        false
+    ));
+    myLibrary.push(new Book(
+        'Cradle: The Path of Gold',
+        "Will Wight",
+        803,
+        false
+    ));
+    myLibrary.push(new Book(
+        'Harry Potter and the Philosophers Stone',
+        "JK Rowling",
+        500,
+        false
+    ));
+    refresh();
+})();

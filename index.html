@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,7 +8,42 @@
     <script src="script.js" defer></script>
     <title>Odin Library</title>
 </head>
-<body>
-    
+
+<body class="flex flex-col ai-center">
+    <div class="container flex jc-center">
+        <div class="library-container flex gap20 flex-wrap">
+
+        </div>
+
+        <dialog id="dialog">
+            <form method="dialog">
+                <div class="input-wrapper flex flex-col">
+                    <label for="title">Title:</label>
+                    <input id="title" type="text">
+                </div>
+                <div class="input-wrapper flex flex-col">
+                    <label for="author">Author name:</label>
+                    <input id="author" type="text">
+                </div>
+                <div class="input-wrapper flex flex-col">
+                    <label for="pages">How many pages:</label>
+                    <input id="pages" type="text">
+                </div>
+                <div class="input-wrapper flex flex-col">
+                    <label for="read">Have you read this book:</label>
+                    <select name="read" id="read">
+                        <option value="yes">Yes</option>
+                        <option value="no" selected>No</option>
+                    </select>
+                </div>
+                <button type="close" class="close">Close</button>
+                <button type="submit" class="submit">Add</button>
+            </form>
+        </dialog>
+
+    </div>
+    <button class="show">Add Book</button>
+
 </body>
+
 </html>
