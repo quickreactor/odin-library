@@ -14,12 +14,14 @@ const myLibrary = [
 
 ];
 
-function Book(title, author, numPages, isRead) {
-    this.title = title;
-    this.author = author;
-    this.numPages = numPages;
-    this.isRead = isRead;
-    this.toggleRead = function() {
+class Book {
+    constructor(title, author, numPages, isRead){
+        this.title = title;
+        this.author = author;
+        this.numPages = numPages;
+        this.isRead = isRead;
+    }
+    toggleRead() {
         console.log(`set changed oh nooo!`)
         return this.isRead = !this.isRead;
     }
@@ -29,14 +31,13 @@ function Book(title, author, numPages, isRead) {
 }
 
 function addBookToLibrary() {
-    myLibrary.push(
-        new Book(
-            titleIn.value,
-            authorIn.value,
-            pagesIn.value,
-            readIn.value === 'yes' ? true : false
-        )
+    const book = new Book(
+        titleIn.value,
+        authorIn.value,
+        pagesIn.value,
+        readIn.value === 'yes' ? true : false
     );
+    myLibrary.push(book);
 }
 
 
@@ -54,7 +55,7 @@ function refresh() {
         let toggleReadButton = document.createElement('button');
         toggleReadButton.innerText = myLibrary[bookNumber].isRead === true ? "Read" : "Unread";
         toggleReadButton.classList.add('toggle-read-button');
-        toggleReadButton.addEventListener('click', function(e) {
+        toggleReadButton.addEventListener('click', function (e) {
             let dataBook = parseInt(e.target.parentElement.dataset.bookNumber);
             console.log(bookNumber);
             myLibrary[dataBook].toggleRead();
